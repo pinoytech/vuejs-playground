@@ -2,7 +2,8 @@ var app = new Vue({
   el: '#app',
   data: {
     product: 'Shoe',
-    image: 'shoe-red.jpg',
+    brand: 'Nike',
+    selectedVariant: 0,
     inStock: false,
     inventory: 0,
     onSale: false,
@@ -11,12 +12,14 @@ var app = new Vue({
       {
         variantId: 2234,
         variantColor: "red",
-        variantImage: 'shoe-red.jpg'
+        variantImage: 'shoe-red.jpg',
+        variantQuantity: 11
       },
       {
         variantId: 2235,
         variantColor: "blue",
-        variantImage: 'shoe-blue.jpg'
+        variantImage: 'shoe-blue.jpg',
+        variantQuantity: 0
       }
     ],
     cart: 0
@@ -25,11 +28,19 @@ var app = new Vue({
     addToCart: function() {
       this.cart += 1;
     },
-    updateProduct: function(variantImage) {
-      this.image = variantImage;
+    updateProduct: function(index) {
+      this.selectedVariant = index;
     },
     removeFromCart: function() {
       this.cart = 0;
+    }
+  },
+  computed: {
+    title: function() {
+      return this.brand + ' ' + this.product
+    },
+    image: function() {
+      return this.variants[this.selectedVariant].variantImage
     }
   }
 })
