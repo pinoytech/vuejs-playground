@@ -21,10 +21,6 @@ Vue.component('product', {
         </div>
         <button v-on:click="addToCart" :disabled="variants[selectedVariant].variantQuantity == 0" :class="{ disabledButton: variants[selectedVariant].variantQuantity < 1 }">Add to Cart</button>
         <button v-on:click="removeFromCart">Remove to Cart</button>
-
-        <div class="cart">
-          <p>Cart({{cart}})</p>
-        </div>
       </div>
     </div>
   `,
@@ -50,13 +46,12 @@ Vue.component('product', {
           variantImage: 'shoe-blue.jpg',
           variantQuantity: 0
         }
-      ],
-      cart: 0
+      ]
     }
   },
   methods: {
     addToCart: function() {
-      this.cart += 1;
+      this.$emit('add-to-cart');
     },
     updateProduct: function(index) {
       this.selectedVariant = index;
@@ -76,5 +71,13 @@ Vue.component('product', {
 })
 
 var app = new Vue({
-  el: '#app'
+  el: '#app',
+  data: {
+    cart: 0
+  },
+  methods: {
+    updateCart() {
+      this.cart += 1;
+    }
+  }
 })
