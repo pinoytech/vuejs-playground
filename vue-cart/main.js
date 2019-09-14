@@ -89,6 +89,12 @@ Vue.component('product', {
 Vue.component('product-review', {
   template: `
     <form class="review-form" @submit.prevent="onSubmit">
+      <div v-if="errors.length">
+        <p>Please correct the following errors:</p>
+        <ul>
+          <li v-for="error in errors">{{ error }}</li>
+        </ul>
+      </div>
       <p>
         <label for="name">Name</label>
         <input id="name" v-model="name" />
@@ -114,20 +120,28 @@ Vue.component('product-review', {
     return {
       name: null,
       review: null,
-      rating: null
+      rating: null,
+      errors: []
     }
   },
   methods: {
     onSubmit: function() {
-      let productReview = {
-        name: this.name,
-        review: this.review,
-        rating: this.rating
-      };
-      this.$emit('add-product-review', productReview);
-      this.name = null;
-      this.review = null;
-      this.rating = null;
+      this.errors = [];
+      if (this.name && this.review && this.rating) {
+        let productReview = {
+          name: this.name,
+          review: this.review,
+          rating: this.rating
+        };
+        this.$emit('add-product-review', productReview);
+        this.name = null;
+        this.review = null;
+        this.rating = null;
+      } else {
+        if (!this.name) this.errors.push("Name is required");
+        if (!this.review) this.errors.push("Review is required");
+        if (!this.rating) this.errors.push("Rating is required");
+      }
     }
   }
 })
