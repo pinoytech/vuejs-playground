@@ -70,7 +70,7 @@ Vue.component('product', {
       this.selectedVariant = index;
     },
     removeFromCart: function() {
-      this.cart = 0;
+      this.$emit('remove-from-cart');
     },
     addReview: function(productReview) {
       this.reviews.push(productReview);
@@ -154,6 +154,11 @@ var app = new Vue({
   methods: {
     updateCart() {
       this.cart += 1;
+    },
+    removeFromCart() {
+      if (this.cart > 0) {
+        this.cart -= 1;
+      }
     }
   }
 })
