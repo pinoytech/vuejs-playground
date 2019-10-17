@@ -2,28 +2,29 @@
   <main>
     <h1>Todo List</h1>
     <ul>
-      <li v-for="(item, index) in todos" :key="index">{{ item }}</li>
+      <li v-for="(item, index) in state.todos" :key="index">{{ item }}</li>
     </ul>
-    <input v-model="todo" />
-    <button @click="addTodo">Add Todo Item</button>
+    <input v-model="state.item" />
+    <button @click="addItem">Add Todo Item</button>
   </main>
 </template>
 
 <script>
+import { reactive } from "@vue/composition-api";
+
 export default {
-  name: "app",
-  components: {},
-  data() {
-    return {
-      todo: "",
+  setup() {
+    let state = reactive({
+      item: "",
       todos: []
+    });
+    const addItem = () => {
+      state.todos.unshift(state.item);
     };
-  },
-  methods: {
-    addTodo() {
-      this.todos.unshift(this.todo);
-      this.todo = "";
-    }
+    return {
+      state,
+      addItem
+    };
   }
 };
 </script>
